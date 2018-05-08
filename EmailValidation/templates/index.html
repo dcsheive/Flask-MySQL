@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="C:/Users/Laptop/Desktop/DojoAssignments/plugin/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <script type="text/javascript" src='C:\Users\Laptop\Desktop\DojoAssignments\plugin\js\bootstrap.js'></script>
+</head>
+<body>
+    <h1>Email validation with DB</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="applesauce">
+          <p>{{message}}</p>
+        </div>                
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+      <form action="/add_email" method="post">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="text" name="email">
+          <input type="submit" class="sub">
+        </div>
+      </form>
+</body>
+</html>

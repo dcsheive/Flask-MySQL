@@ -1,0 +1,33 @@
+*{
+    margin:0;
+    padding: 0;
+}
+body {
+    width: 500px;
+    margin: auto;
+    font-size: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+tr {
+    display: flex;
+    justify-content: space-between;
+    width: 460px;
+    padding: 10px;
+    margin: 10px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+.BBQ {
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+}
+input {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
