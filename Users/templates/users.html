@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <script type="text/javascript" src='/static/js/bootstrap.js'></script>
+</head>
+<body>
+  <div id="usertable">
+    <h1>All Users</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>First Name:</th>
+          <th>Last Name:</th>
+          <th>Email:</th>
+        </tr>
+      </thead>
+      {%for i in users%}
+      <tr>
+        <td>{{i['first_name']}}</td>
+        <td>{{i['last_name']}}</td>
+        <td>{{i['email']}}</td>
+      </tr>
+      {%endfor%}
+    </table>
+  </div>
+</body>
+</html>

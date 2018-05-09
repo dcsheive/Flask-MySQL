@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>The Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <script type="text/javascript" src='/static/js/bootstrap.js'></script>
+</head>
+<body>
+    <div class="userbox">
+        <table class="table">
+            <tr>
+                <td>First Name: </td>
+                <td>{{user[0]['first_name']}}</td>
+            </tr>
+            <tr>
+                <td>Last Name: </td>
+                <td>{{user[0]['last_name']}}</td>
+            </tr>
+            <tr>
+                <td>Email: </td>
+                <td>{{user[0]['email']}}</td>
+            </tr>
+        </table>
+        <div class="buttons">
+            <form action="/edit">
+                <button type="submit" class="btn btn-default yellowbutton" style="margin: 20px">Edit Info</button>
+            </form>
+            <form action="/deleteuser">
+                <button type="submit" class="btn btn-default delete" style="margin: 20px">Delete Account</button>
+            </form>
+            <form action="/home">
+                <button type="submit" class="btn btn-default" style="margin: 20px">Go Back</button>
+            </form>
+        </div>  
+    </div>  
+</body>
+</html>

@@ -1,0 +1,97 @@
+*{
+    margin:0 ;
+    padding: 0;
+}
+.applesauce {
+    width: 200px;
+    background-color: red;
+}
+#wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+#reg, #log {
+    width: 500px;
+    padding: 20px;
+}
+button {
+    background: linear-gradient(rgb(2, 207, 2), green);
+    box-shadow: 2px 2px 2px black;
+    color: white;
+    background-color: green;
+}
+.flash {
+    color:red;
+}
+h1 {
+    padding: 20px;
+}
+.thanks {
+    padding: 20px;
+}
+h3 {
+    padding: 20px;
+}
+#top {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    border-bottom: 2px solid black;
+    position: fixed;
+    width: 100vw;
+    background-color: whitesmoke;
+}
+#top h3 {
+    margin-left: 40%;
+}
+
+#container{
+    padding: 10%;
+}
+.commentbox {
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-bottom: 15%;
+}
+.commentbutton{
+    background: linear-gradient(blue, darkblue);
+    float: right;
+    background-color: darkblue;
+}
+.delete {
+    background: linear-gradient(red, darkred);
+    background-color: darkred;
+    float: right;
+
+}
+.message {
+    clear: both;
+    border: 1px solid gray;
+    padding: 5px;
+    margin-top: 5%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgb(77, 76, 76);
+    overflow: wrap;
+}
+.comment {
+    clear: both;
+    border: 1px solid darkgray;
+    padding: 5px;
+    margin-top: 2%;
+    margin-left: 5%;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px gray;
+
+}
+p {
+    margin-left:10px; 
+    font-size: 20px;
+    clear: both;
+    overflow-wrap: break-word;
+}
+h4{
+    float: left;
+}
+label {
+    font-size: 18px;
+}

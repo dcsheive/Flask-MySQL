@@ -9,7 +9,7 @@ app.secret_key = 'KeepItSecretKeepItSafe'
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 # invoke the connectToMySQL function and pass it the name of the database we're using
 # connectToMySQL returns an instance of MySQLConnection, which we will store in the variable 'mysql'
-mysql = connectToMySQL('friendsdb')
+mysql = connectToMySQL('thewall')
 # now, we may invoke the query_db method
 @app.route('/')
 def index():

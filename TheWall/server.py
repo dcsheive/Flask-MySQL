@@ -22,16 +22,18 @@ def index():
     if 'email' not in session:
         session['email'] = ""
     return render_template("index.html", name1 = session['first_name'], name2 = session['last_name'], email = session['email'], login = session['login'])
+
+
+
+
 @app.route('/register', methods=['POST'])
 def create():
-    all_emails = mysql.query_db("SELECT email FROM users")
     err = False
     email = request.form['email']
     first = request.form['first_name']
     last = request.form['last_name']
     passw = request.form['password']
     passc = request.form['passcom']
-    print(all_emails)
     if email or first or last:
         session['email'] = email
         session['first_name'] = first
@@ -76,15 +78,23 @@ def create():
             'password' : pw_hash
            }
     mysql.query_db(query, data)
-    session['registered'] = True
-    session['fname'] = request.form['first_name']
+    query = "select id from users where email = %(email)s;"
+    data = {
+        'email' : request.form['email']
+    }
+    result = mysql.query_db(query,data)
+    session.clear()
+    session['id'] = result[0]['id']
     return redirect('/home')
+
+
+
+
 @app.route('/login', methods=['post'])
 def login():
     session['login'] = 1
     email = request.form['email']
     passw = request.form['password']
-    session['registered'] = False
     if len(passw) < 1 or len(email) < 1:
         flash('You must enter email and password!')
         return redirect('/')
@@ -95,24 +105,86 @@ def login():
     result = mysql.query_db(query,data)
     if result:
         if bcrypt.check_password_hash(result[0]['password'], passw):
-            session['fname'] = result[0]['first_name']
+            session['id'] = result[0]['id']
             return redirect('/home')
     flash("Could not log you in!")
     return redirect('/')
 
+
+
+
 @app.route('/home')
 def success():
-    registered = session['registered']
-    fname = session['fname']
-    session.clear()
-    return render_template('home.html', registered = registered, fname = fname)
+    if 'id' not in session:
+        return redirect('/')
+    query = "SELECT first_name FROM users WHERE id = %(id)s;"
+    data = {
+        'id' : session['id']
+    }
+    result = mysql.query_db(query,data)
+    fname = result[0]['first_name']
+    query = "SELECT CONCAT_WS(' ', users.first_name, users.last_name) as name, messages.id as message, DATE_FORMAT(messages.created_at, '%M %D %Y %l:%i %p') as created, messages.text as text, users.id as user FROM users join messages on users.id = messages.user_id;"
+    resultMess = mysql.query_db(query)
+    query = "SELECT CONCAT_WS(' ', users.first_name, users.last_name) as name, posts.id as comment, DATE_FORMAT(posts.created_at, '%M %D %Y %l:%i %p') as created, posts.text as text, posts.message_id as message  FROM users join posts on users.id = posts.user_id;"
+    resultComm = mysql.query_db(query)
+    return render_template('home.html', fname = fname, messages = reversed(resultMess), comments = resultComm)
+
+
+
+
 @app.route('/logout', methods=['post'])
 def loggout():
+    session.clear()
     flash('You have logged out!')
     return redirect('/')
-@app.route('/destroy')
-def destroy():
-    session.clear()
-    return redirect('/')
+
+
+
+
+@app.route('/message', methods=['post'])
+def message():
+    if len(request.form['messagebox'])<1:
+        return redirect('/home')
+    query = "INSERT INTO messages (text, user_id, created_at, updated_at) VALUES (%(text)s, %(user_id)s, NOW(), NOW());"
+    data = {
+            'text': request.form['messagebox'],
+            'user_id' : session['id']
+    }
+    mysql.query_db(query, data)
+    return redirect('/home')
+
+
+
+
+@app.route('/comment', methods=['post'])
+def comment():
+    if len(request.form['commentbox'])<1:
+        return redirect('/home')
+    query = "INSERT INTO posts (text, user_id, message_id, created_at, updated_at) VALUES (%(text)s, %(user_id)s, %(message_id)s, NOW(), NOW());"
+    data = {
+            'text': request.form['commentbox'],
+            'user_id' : session['id'],
+            'message_id' : request.form['message_id']
+    }
+    mysql.query_db(query, data)
+    return redirect('/home')
+
+
+
+
+@app.route('/delete', methods=['post'])
+def delete():
+    message = request.form['message_id']
+    print('banananas')
+    query = "DELETE FROM thewall.messages where id = %(message)s;"
+    data = {
+            'message': message
+    }
+    mysql.query_db(query, data)
+    return redirect('/home')
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
