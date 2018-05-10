@@ -26,6 +26,15 @@
         <form action="/message" method="post">
             <div class="form-group">
                 <label for="messagebox">Post a message</label>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {%if category == 'mess'%}
+                                <li >{{ message }}</li>
+                            {%endif%}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <textarea class="form-control" rows="4" id="messagebox" name="messagebox"></textarea>
             </div>
             <button type="submit" class="btn btn-default">Post a message</button>
@@ -54,6 +63,15 @@
                     <div class="form-group">
                         <input type="hidden" name='message_id' value="{{i['message']}}">
                         <label for="comment">Post a comment</label>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    {%if category == 'comm'%}
+                                        <li >{{ message }}</li>
+                                    {%endif%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
                         <textarea class="form-control" rows="3" name="commentbox"></textarea>
                     </div>
                     <button type="submit" class="btn btn-default commentbutton">Post a comment</button>

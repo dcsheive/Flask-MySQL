@@ -20,8 +20,9 @@ button {
     color: white;
     background-color: green;
 }
-.flash {
+li {
     color:red;
+    list-style-type: none;
 }
 h1 {
     padding: 20px;

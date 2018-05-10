@@ -40,11 +40,37 @@ def create():
         session['email'] = email
         session['first_name'] = first
         session['last_name'] = last
-    if len(email) < 1 or len(first) < 1 or len(last) <1 or len(passw)<1 or len(passc)<1:
-        flash('All fields are required')
+    if len(first) < 1: 
+        flash('Please enter your first name', 'first_name')
         err = True
-    if not EMAIL_REGEX.match(email):
-        flash('Please enter a valid email address')
+    elif not first.isalpha() and first: 
+        session['first_name'] = ''
+        flash("Name must not contain numbers!", 'first_name')
+        err = True
+    if len(last) <1:
+        flash('Please enter your last name', 'last_name')
+        err = True
+    elif not last.isalpha() and last:
+        session['last_name'] = ''
+        flash("Name must not contain numbers!", 'last_name')
+        err = True
+    if len(passw)<1: 
+        flash('Please enter a password', 'password')
+        err = True
+    if len(passw) < 8 and passc and passw:
+        flash("Passwords must be 8 or more characters!", 'password')
+        err = True
+    if len(passc)<1:
+        flash('Please confirm password', 'password2')
+        err = True
+    if passw != passc:
+        flash("Passwords must match!", 'password2')
+        err = True
+    if len(email) < 1:
+        flash('Please enter an email', 'email')
+        err = True
+    elif not EMAIL_REGEX.match(email):
+        flash('Please enter a valid email address','email')
         session['email'] = ''
         err = True
     query = "SELECT * FROM users WHERE email = %(email)s;"
@@ -53,21 +79,7 @@ def create():
     }
     result = mysql.query_db(query,data)
     if result:
-        flash('Email taken!')
-        err = True
-    if passw != passc:
-        flash("Passwords must match!")
-        err = True
-    if len(passw) < 8 and passc and passw:
-        flash("Passwords must be 8 or more characters!")
-        err = True
-    if not first.isalpha() and first: 
-        session['first_name'] = ''
-        flash("Name must not contain numbers!")
-        err = True
-    if not last.isalpha() and last:
-        session['last_name'] = ''
-        flash("Name must not contain numbers!")
+        flash('Email taken!', 'email')
         err = True
     if err==True:
         return redirect('/')
@@ -97,9 +109,10 @@ def login():
     session['login'] = 1
     email = request.form['email']
     passw = request.form['password']
-    if len(passw) < 1 or len(email) < 1:
-        flash('You must enter email and password!')
-        return redirect('/')
+    
+    if len(email) < 1 or len(passw) < 1:
+        flash('You must enter email and password!', 'login')
+        err = True
     query = "SELECT * FROM users WHERE email = %(email)s;"
     data = {
         'email' : email
@@ -109,8 +122,11 @@ def login():
         if bcrypt.check_password_hash(result[0]['password'], passw):
             session['id'] = result[0]['id']
             return redirect('/home')
-    flash("Could not log you in!")
-    return redirect('/')
+    else:
+        flash('Could not log you in!', 'login')
+        err=True
+    if err==True:
+        return redirect('/')
 
 
 
@@ -137,7 +153,7 @@ def success():
 @app.route('/logout', methods=['post'])
 def loggout():
     session.clear()
-    flash('You have logged out!')
+    flash('You have logged out!', 'login')
     return redirect('/')
 
 
@@ -146,6 +162,7 @@ def loggout():
 @app.route('/message', methods=['post'])
 def message():
     if len(request.form['messagebox'])<1:
+        flash('Message cannot be empty!', 'mess')
         return redirect('/home')
     query = "INSERT INTO messages (text, user_id, created_at, updated_at) VALUES (%(text)s, %(user_id)s, NOW(), NOW());"
     data = {
@@ -161,6 +178,7 @@ def message():
 @app.route('/comment', methods=['post'])
 def comment():
     if len(request.form['commentbox'])<1:
+        flash('Comment cannot be empty!', 'comm')
         return redirect('/home')
     query = "INSERT INTO posts (text, user_id, message_id, created_at, updated_at) VALUES (%(text)s, %(user_id)s, %(message_id)s, NOW(), NOW());"
     data = {
