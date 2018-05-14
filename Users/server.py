@@ -204,6 +204,37 @@ def delete():
 
 
 
+@app.route('/deleteuser')
+def deleteuser():
+    query = "DELETE FROM thewall.users where id = %(id)s;"
+    data = {
+            'id': session['id']
+    }
+    mysql.query_db(query, data)
+    query = "DELETE FROM thewall.messages where user_id = %(id)s;"
+    data = {
+            'id': session['id']
+    }
+    mysql.query_db(query, data)
+    query = "DELETE FROM thewall.posts where user_id = %(id)s;"
+    data = {
+            'id': session['id']
+    }
+    mysql.query_db(query, data)
+    session.clear()
+    flash('Your account has been deleted!', 'login')
+    return redirect('/')
+
+
+
+
+@app.route('/destroy')
+def destroy():
+    session.clear()
+    return redirect('/')
+
+
+
 
 @app.route('/user')
 def user():
